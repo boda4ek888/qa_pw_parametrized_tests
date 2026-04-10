@@ -74,4 +74,9 @@ export class MenuPage {
   async assertPromoMessageIsVisible() {
     await expect(this.promoMessage).toBeVisible();
   }
+
+  async assertCoffeCupCostHasValue(coffeeName, value) {
+    await expect(this.page.getByRole('heading',
+      { name: coffeeName })).toContainText(value);
+  }
 }

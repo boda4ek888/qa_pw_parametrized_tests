@@ -8,22 +8,16 @@ export class CartPage {
     this.espressoItem = this.cartListLocator
       .getByRole('listitem')
       .filter({ hasText: 'Espresso' });
-    this.espressoName = this.espressoItem.locator('div').nth(0);
-    this.espressoUnit = this.espressoItem.locator('div').nth(1);
     this.espressoTotalCost = this.espressoItem.locator('div').nth(3);
 
     this.cappuccinoItem = this.cartListLocator
       .getByRole('listitem')
       .filter({ hasText: 'Cappuccino' });
-    this.cappuccinoName = this.cappuccinoItem.locator('div').nth(0);
-    this.cappuccinoUnit = this.cappuccinoItem.locator('div').nth(1);
     this.cappuccinoTotalCost = this.cappuccinoItem.locator('div').nth(3);
 
     this.discountedMochaItem = this.cartListLocator
       .getByRole('listitem')
       .filter({ hasText: '(Discounted) Mocha' });
-    this.discountedMochaName = this.discountedMochaItem.locator('div').nth(0);
-    this.discountedMochaUnit = this.discountedMochaItem.locator('div').nth(1);
     this.discountedMochaTotalCost = this.discountedMochaItem
       .locator('div')
       .nth(3);
@@ -34,7 +28,6 @@ export class CartPage {
     this.americanoTotalCost = this.americanoItem.locator('div').nth(3);
 
     this.removeAllEspressoButton = page.getByLabel('Remove all Espresso');
-    this.removeAllCappuccinoButton = page.getByLabel('Remove all Cappuccino');
 
     this.removeOneEspressoButton = page.getByRole('button', {
       name: 'Remove one Espresso',
@@ -62,10 +55,6 @@ export class CartPage {
     return this.coffeeListItemLocator(name).locator('div').nth(0);
   }
 
-  coffeeListItemUnitCell(name) {
-    return this.coffeeListItemLocator(name).locator('div').nth(1);
-  }
-
   coffeeListItemTotalCostCell(name) {
     return this.coffeeListItemLocator(name).locator('div').nth(3);
   }
@@ -86,8 +75,8 @@ export class CartPage {
     await this.removeAllEspressoButton.click();
   }
 
-  async clickRemoveAllCappucinoButton() {
-    await this.removeAllCappuccinoButton.click();
+  async clickRemoveAllCoffeeButton(coffee) {
+    await this.page.getByLabel(`Remove all ${coffee}`).click();
   }
 
   async clickRemoveOneEspressoButton() {
@@ -118,18 +107,6 @@ export class CartPage {
     await expect(this.coffeeListItemNameCell(name)).toContainText(name);
   }
 
-  async assertEspressoNameIsContainsCorrectText() {
-    await expect(this.espressoName).toContainText('Espresso');
-  }
-
-  async assertCoffeeUnitContainsCorrectText(name, text) {
-    await expect(this.coffeeListItemUnitCell(name)).toContainText(text);
-  }
-
-  async assertEspressoUnitContainsCorrectText(text) {
-    await expect(this.espressoUnit).toContainText(text);
-  }
-
   async assertCoffeeTotalCostContainsCorrectText(name, text) {
     await expect(this.coffeeListItemTotalCostCell(name)).toContainText(text);
   }
@@ -144,14 +121,6 @@ export class CartPage {
 
   async assertCappuccinoItemIsHidden() {
     await expect(this.cappuccinoItem).toBeHidden();
-  }
-
-  async assertCappuccinoNameIsContainsCorrectText() {
-    await expect(this.cappuccinoName).toContainText('Cappuccino');
-  }
-
-  async assertCappuccinoUnitContainsCorrectText(text) {
-    await expect(this.cappuccinoUnit).toContainText(text);
   }
 
   async assertCappuccinoTotalCostContainsCorrectText(text) {
